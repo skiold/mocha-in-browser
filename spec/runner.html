@@ -3,7 +3,6 @@
     <title>Mocha</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="lib/browser/mocha.css" />
-    <script src="./lib/browser/jquery.js" type="text/javascript"></script>
     <script src="./lib/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
     <script>
@@ -11,16 +10,17 @@
         if (!expr) throw new Error(msg || 'failed');
       }
     </script>
-    <script src="../public/js/string_calculator.js"></script>
-    <script src="./string_calculator_spec.js"></script>
-    <script>
+    <script src="./iframe_spec.js"></script>
+  <script>
       onload = function(){
-        var runner = mocha.run();
-        // runner.globals(['foo', 'bar', 'baz']);
-
-        // runner.on('test end', function(test){
-        //   console.log(test.fullTitle());
-        // });
+        iframe = document.createElement('iframe');
+        iframe.src = "runner.html";
+        document.body.appendChild(iframe);
+        iframe.addEventListener('load', function () {
+          var window = iframe.contentWindow,
+              $ = window.$;
+          var runner = mocha.run();
+        });
       };
     </script>
   </head>
